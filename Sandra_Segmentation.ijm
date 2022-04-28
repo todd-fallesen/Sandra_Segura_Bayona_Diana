@@ -55,6 +55,13 @@ function processFile(image_dir, output_dir, DAPI_ch, file) {
 	img_output_dir = output_dir+File.separator+file_name+File.separator+"input_folder";
 	File.makeDirectory(img_output_dir);
 
+//make the ROI table
+list_size = roiManager("count");
+temp_array = newArray(list_size);
+table1 = "Area_table";
+Table.create(table1);
+Table.setColumn("Row", temp_array);
+Table.setColumn("Area", temp_array);
 	
 for (r=0; r<roiManager("count");r++){   //this loop goes over the segmentation block, and finds the ROI's smaller than min_area, and removes them
 				 selectWindow("Label Image");
@@ -65,10 +72,8 @@ for (r=0; r<roiManager("count");r++){   //this loop goes over the segmentation b
 				 area = getResult("Area", r);
 				 print("Row: ", r, "has area: ", area);
 				 	
-				 	//if (area<min_size) {
-				 		//roiManager("delete");
-				 		//print("Deleted row :", r);
-									    //			}// end of deletion block
+				Table.set("Row", r, r, table1);
+           		Table.set("Area", r, area, table1);
 									    			
 	}
 
@@ -83,12 +88,20 @@ saveAs("tiff",roi_dir+File.separator+file_name+"_Label_OVERLAY.tiff");  //save t
 
 print("saved");
 for (r=0; r<roiManager("count");r++){ 
+	
+				 selectWindow("Area_table");
+				 area = Table.get("Area", r);
+				 if(area>min_size) {
+				 	
+				 	print(area);
 				   	selectWindow(imageTitle);
 				    roiManager("Select", r); 
+				    
 				    run("Duplicate...", "duplicate");	
 				    ROITitle=getTitle(); 
 				    saveAs("tif",img_output_dir+File.separator+ROITitle+'-'+r);
 				    close();
+				 }
 				    			
 				}
 	
@@ -96,10 +109,13 @@ for (r=0; r<roiManager("count");r++){
 	
 	
 	
+	
 	print("Processing: " + image_dir + File.separator + file);	
 	print("Saving : " + output_dir+File.separator+ File.getNameWithoutExtension(file));
 	close("*");  //close all open image windows
 	roiManager("reset"); //reset the ROI manager
+	
+	Table.reset(table1);
 	
 }// end of function
 
