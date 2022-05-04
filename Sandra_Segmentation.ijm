@@ -14,8 +14,9 @@
 	close("*");  //close all open image windows
 	roiManager("reset"); //reset the ROI manager
 	run("Clear Results");
-min_size = 1000;
+min_size = 500;
 processFolder(image_dir);
+print("Done!");
 
 // function to scan folders/subfolders/files to find files with correct suffix
 function processFolder(image_dir) {
@@ -74,6 +75,7 @@ for (r=0; r<roiManager("count");r++){   //this loop goes over the segmentation b
 				 	
 				Table.set("Row", r, r, table1);
            		Table.set("Area", r, area, table1);
+           		Table.update;
 									    			
 	}
 
