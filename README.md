@@ -2,7 +2,7 @@
 Todd Fallesen, CALM Facility, April 27 2022
  Diana colocolization project
 
-This is a proejct for Sandra Segura-Bayona to do segmentation and colocalization using FIJI.
+This is a project to do segmentation and colocalization using FIJI.
 To run the segmentation script, you need to have CSBDeep and StarDist plugins installed on FIJI. 
 To run the coloc_script you need to have CSBDeep, 3D Imagining Suite and Diana installed on your computer.
 
